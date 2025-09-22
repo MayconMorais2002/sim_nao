@@ -13,19 +13,23 @@
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
+            overflow: hidden; /* Evita barras de rolagem desnecessárias */
         }
 
         .container {
             text-align: center;
             background-color: #fff;
-            padding: 40px;
+            padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+            box-sizing: border-box;
         }
 
         .message-box {
-            padding: 20px 40px;
-            font-size: 2em;
+            padding: 15px 20px;
+            font-size: 1.5em;
             font-weight: bold;
             color: #333;
             margin-bottom: 20px;
@@ -35,19 +39,23 @@
 
         .buttons-container {
             display: flex;
+            flex-direction: row;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
+            flex-wrap: wrap;
         }
 
         .btn {
-            padding: 15px 30px;
-            font-size: 1.2em;
+            padding: 12px 25px;
+            font-size: 1em;
             font-weight: bold;
             color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            flex-grow: 1;
+            max-width: 150px;
         }
 
         .btn.yes {
@@ -63,14 +71,35 @@
             position: relative;
             transition: all 0.05s ease;
         }
+
+        /* Media Queries para telas muito pequenas */
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+                width: 95%;
+            }
+            .message-box {
+                font-size: 1.2em;
+                padding: 10px 15px;
+            }
+            .buttons-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9em;
+                max-width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="message-box">Me paga um Açai?</div>
+    <div class="message-box">Me ajuda no TCC</div>
     <div class="buttons-container">
-        <button class="btn yes" onclick="alert('Boa! Boraaaa!!!');">Sim</button>
+        <button class="btn yes" onclick="alert('Boa! Bora trabalhar!');">Sim</button>
         <button class="btn no" id="no-button">Não</button>
     </div>
 </div>
@@ -78,15 +107,30 @@
 <script>
     const noButton = document.getElementById('no-button');
 
-    noButton.addEventListener('mouseover', () => {
-        // Gera novas posições aleatórias
-        const randomX = Math.random() * (window.innerWidth - noButton.offsetWidth);
-        const randomY = Math.random() * (window.innerHeight - noButton.offsetHeight);
+    function moveButton() {
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        const buttonWidth = noButton.offsetWidth;
+        const buttonHeight = noButton.offsetHeight;
 
-        // Aplica as novas posições
+        const maxX = viewportWidth - buttonWidth;
+        const maxY = viewportHeight - buttonHeight;
+
+        const randomX = Math.max(0, Math.random() * maxX);
+        const randomY = Math.max(0, Math.random() * maxY);
+
         noButton.style.position = 'absolute';
         noButton.style.left = `${randomX}px`;
         noButton.style.top = `${randomY}px`;
+    }
+
+    // Ação para o computador: quando o mouse passa por cima
+    noButton.addEventListener('mouseover', moveButton);
+
+    // Ação para o celular: quando o botão é tocado
+    noButton.addEventListener('touchstart', (event) => {
+        event.preventDefault(); // Previne o comportamento padrão (como o clique)
+        moveButton();
     });
 </script>
 
