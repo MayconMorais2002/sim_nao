@@ -108,6 +108,9 @@
     const noButton = document.getElementById('no-button');
 
     function moveButton() {
+        // Assegura que o botão está em posição absoluta antes de mover
+        noButton.style.position = 'absolute';
+
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
         const buttonWidth = noButton.offsetWidth;
@@ -116,10 +119,10 @@
         const maxX = viewportWidth - buttonWidth;
         const maxY = viewportHeight - buttonHeight;
 
+        // Gera posições aleatórias dentro da tela visível
         const randomX = Math.max(0, Math.random() * maxX);
         const randomY = Math.max(0, Math.random() * maxY);
 
-        noButton.style.position = 'absolute';
         noButton.style.left = `${randomX}px`;
         noButton.style.top = `${randomY}px`;
     }
@@ -129,8 +132,15 @@
 
     // Ação para o celular: quando o botão é tocado
     noButton.addEventListener('touchstart', (event) => {
-        event.preventDefault(); // Previne o comportamento padrão (como o clique)
+        // Previne o comportamento padrão (como o clique), resolvendo o atraso e o duplo movimento
+        event.preventDefault();
         moveButton();
+    });
+
+    // Ação adicional para garantir que o botão não seja clicado após o toque
+    noButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        // Opcionalmente, pode-se adicionar uma função aqui, mas não é necessário para o movimento
     });
 </script>
 
